@@ -8,7 +8,7 @@ import io
 
 # --- CONFIGURATION ---
 # The folder where Health Auto Export saves daily files
-SOURCE_FOLDER_ID = 'https://drive.google.com/drive/u/0/folders/1uOPF3w-kLwHf1d_xX3tuEFHzPeVbhoat' 
+SOURCE_FOLDER_ID = '1uOPF3w-kLwHf1d_xX3tuEFHzPeVbhoat' 
 # Your root HealthData folder where the Glide app looks for data
 DESTINATION_FOLDER_ID = '1ax2eh1VwB0eO-Gg0Yh62xxLhzSuoedVl'
 # The static filename Glide expects
