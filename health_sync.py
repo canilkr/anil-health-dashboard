@@ -2,7 +2,7 @@ import os
 import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaByteArrayUpload
+import googleapiclient.http
 
 # Folder and File IDs
 SOURCE_FOLDER_ID = '1VU_UKKzholxH6BL_ISRyGyio_TZJ1Uvm'
@@ -42,7 +42,7 @@ def sync_data():
     content = service.files().get_media(fileId=latest_file_id).execute()
     
     # Update the master health_data.json file directly
-    media = MediaByteArrayUpload(content, mimetype='application/json')
+    media = googleapiclient.http.MediaByteArrayUpload(content, mimetype='application/json')
     
     service.files().update(
         fileId=DESTINATION_FILE_ID,
