@@ -3,11 +3,11 @@ import json
 import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from googleapiclient.http import MediaByteArrayUpload
 
 # Folder IDs
 SOURCE_FOLDER_ID = '1VU_UKKzholxH6BL_ISRyGyio_TZJ1Uvm'
-DESTINATION_FOLDER_ID = '1ax2eh1VwB0eO-Gg0Yh62xxLhzSuoedVl'
-DESTINATION_FILE_ID = '1ax2eh1VwB0eO-Gg0Yh62xxLhzSuoedVl' # The master health_data.json
+DESTINATION_FILE_ID = '1ax2eh1VwB0eO-Gg0Yh62xxLhzSuoedVl' # This is the ID of the master health_data.json
 
 def get_service():
     creds_json = os.environ.get('GOOGLE_CREDENTIALS')
@@ -18,7 +18,7 @@ def get_service():
 def find_latest_export(service):
     """Finds the most recent JSON file in the source folder."""
     query = f"'{SOURCE_FOLDER_ID}' in parents and trashed = false"
-    # We sort by createdTime descending to get the newest file first
+    # Sort by createdTime descending to get the newest file first
     results = service.files().list(
         q=query, 
         fields="files(id, name, createdTime)", 
@@ -45,8 +45,7 @@ def sync_data():
     # 1. Download the content of the newest file
     content = service.files().get_media(fileId=latest_file_id).execute()
     
-    # 2. Update the master health_data.json file in the destination folder
-    from googleapiclient.http import MediaByteArrayUpload
+    # 2. Update the master health_data.json file
     media = MediaByteArrayUpload(content, mimetype='application/json')
     
     service.files().update(
